@@ -5,6 +5,7 @@ export_path=/Users/shijitao/Desktop
 
 # must choose a configuration(git_repo) in export app config 
 git_path=/Users/shijitao/git/shyjtal
+git_name=shyjtal
 
 # if commit, auto push
 auto_push=true

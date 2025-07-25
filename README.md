@@ -41,4 +41,5 @@
 - **feature**:
     - auto add all README.md when one exists
     - add a new dev path to allow user to add sh(in $HOME/sh)
+    - add a new config to init, add, commi and push a new app
     

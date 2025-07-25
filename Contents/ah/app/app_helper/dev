@@ -91,7 +91,7 @@ if [[ $2 == -a ]]; then
             desc_git_path="$git_path/$git_repo/Contents/${1}"
         fi
 
-        echo mv "$add_file" "$desc_git_path/"
+        mv "$add_file" "$desc_git_path/"
         
         cd "$desc_git_path"
         add_file_bash=$(basename "$add_file")
@@ -111,6 +111,21 @@ if [[ $2 == -a ]]; then
 
 else
     mv ./temp/* "$git_path"/$git_repo
+    cd "$git_path"/$git_repo
+    git add .
+    if [[ $2 == -m ]]; then
+        commit_content=$3
+    fi
+
+    if [[ ! -z $commit_content ]]; then
+        git commit -m "$commit_content"
+        git branch -M main
+        git remote add origin git@github.com:$git_name/$git_repo.git  
+        if [[ $auto_push == "true" ]]; then
+            git push -u origin main    
+        fi 
+    fi
+
 fi
 
 cd $HOME/sh/app/app_helper/temp 
