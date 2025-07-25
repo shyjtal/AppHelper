@@ -1,0 +1,116 @@
+#!/bin/bash
+
+while IFS='=' read -r key value; do
+if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+    key_cleaned="${key// /_}"
+    export "$key_cleaned=$value"
+fi
+done < $HOME/sh/app/app_helper/config
+
+while IFS='=' read -r key value; do
+if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+    key_cleaned="${key// /_}"
+    export "$key_cleaned=$value"
+fi
+done < "$HOME/sh/app/${!1}/config"
+
+if [[ -z $git_repo ]]; then
+    echo "set git_repo in export app config"
+    exit;
+fi
+
+if [[ ! -d $git_path/$git_repo ]]; then
+    mkdir $git_path/$git_repo
+fi
+
+if [[ ! -d $git_path/$git_repo/.git ]]; then
+    cd $git_path/$git_repo
+    git init
+    echo ".DS_Store" >> .gitignore
+    cd $HOME/sh/app/app_helper
+fi
+
+mkdir -p ./temp/Contents
+mkdir -p ./temp/Resources
+
+./preprocess $1
+
+if [[ -f "$HOME/sh/app/${!1}/README.md" ]]; then
+    cp "$HOME/sh/app/${!1}/README.md" ./temp/
+fi
+cp ./resources/install/Install.command ./temp/
+
+if [[ $2 == -a ]]; then
+    # in temp
+    # defalut: Contents/app_name/app/
+    # allowde path: 
+    # /: ./
+    # ~: Contents/app_name/
+    
+    add_files=("${@:3}")
+    cd ./temp
+
+    input_count=$#
+
+    if [[ $(eval "echo \${$((input_count - 1))}") == -m ]]; then
+        commit_content="${@:$input_count}"
+        input_count_add=$((input_count-4))
+        add_files=("${@:3:$input_count_add}")
+    fi
+
+    readme_exist=0
+    for add_file in "${add_files[@]}"; do
+        if [[ "$add_file" == "/README.md" ]]; then
+            readme_exist=$((readme_exist+1))
+            readme_add="README.md"
+        elif [[ "$add_file" == "README.md" ]]; then
+            readme_exist=$((readme_exist+1))
+            readme_add="/README.md"
+        fi
+    done
+
+    if [[ $readme_exist == 1 ]]; then
+        add_files+=("$readme_add")
+    fi
+    
+    for add_file in "${add_files[@]}"; do
+
+        desc_git_path=$git_path
+
+        if [[ "$add_file" != /* ]]; then
+            # defalut
+            add_file=./Contents/$1/app/${!1}/${add_file}
+            desc_git_path="$git_path/$git_repo/Contents/${1}/app/${!1}"
+        elif [[ "$add_file" != $HOME/* ]]; then
+            # /
+            add_file=".$add_file"
+            desc_git_path="$git_path/$git_repo"
+        else
+            # ~
+            add_file=./Contents/$1${add_file:${#HOME}}
+            desc_git_path="$git_path/$git_repo/Contents/${1}"
+        fi
+
+        echo mv "$add_file" "$desc_git_path/"
+        
+        cd "$desc_git_path"
+        add_file_bash=$(basename "$add_file")
+        git add $add_file_bash
+        cd $HOME/sh/app/app_helper/temp
+
+    done
+
+    if [[ ! -z $commit_content ]]; then
+        cd $git_path/$git_repo
+        git commit -m "$commit_content"
+        if [[ $auto_push == "true" ]]; then
+            git push
+        fi
+       
+    fi
+
+else
+    mv ./temp/* "$git_path"/$git_repo
+fi
+
+cd $HOME/sh/app/app_helper/temp 

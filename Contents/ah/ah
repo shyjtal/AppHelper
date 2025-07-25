@@ -1,0 +1,33 @@
+cd ~/sh/app/app_helper
+
+while IFS='=' read -r key value; do
+    if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+        key_cleaned="${key// /_}"
+        export "$key_cleaned=$value"
+    fi
+done < $HOME/sh/app/app_helper/config
+
+if [[ $1 == "-version" ]]; then
+    echo $version
+elif [[ $1 == "-readme" ]]; then
+    readme_app="$($HOME/sh/tools/resolve_app "$readme_app")"
+    if [[ -z $readme_app || "$readme_app" == "vim" ]]; then
+      vim README.md
+    else
+      open -a "$readme_app" README.md
+    fi
+elif [[ $1 == -c ]]; then
+    vim ./config
+elif [[ $1 == -h ]]; then
+    cat ./help.txt
+elif [[ $1 == -l ]]; then
+    echo "sh list:"
+    for f in $HOME/sh/*; do
+        [ -f "$f" ] && [[ $(basename "$f") != .* ]] && printf "%s\t" "$(basename "$f")"
+    done
+    echo
+    echo "app list:"
+    ls ~/sh/app
+else
+    ./app "$@"
+fi

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ $1 == -h ]]; then
+    cat help
+elif [[ $1 == -c ]]; then
+    vim config
+else
+    ./app "$@"
+fi
+
+cp $HOME/sh/app/app_helper/resources/template/sh $HOME/sh/$1

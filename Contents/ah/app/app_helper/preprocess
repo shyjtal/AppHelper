@@ -1,0 +1,28 @@
+cd ~/sh/app/app_helper
+
+while IFS='=' read -r key value; do
+if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+    key_cleaned="${key// /_}"
+    export "$key_cleaned=$value"
+fi
+done < $HOME/sh/app/app_helper/config
+
+app_name="${!1}"
+if [[ -f "$HOME/sh/app/"$app_name"/dependencies" ]]; then
+    while IFS= read -r line || [[ -n $line ]]; do
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*$ ]] && continue
+
+        if [[ $line == tool/* ]]; then
+            ./process "$line"
+        elif [[ $line == simple/* ]]; then
+            ./process "$line"
+        elif [[ $line == brew/* ]]; then
+            cp ./resources/brew/homebrew.sh ./temp/Resources/
+            cp ./resources/brew/install.sh ./temp/Resources/   
+        else
+            ./preprocess $line
+        fi
+
+    done < "$HOME/sh/app/"$app_name"/dependencies"
+fi
+./process app/$1 ${@:2}
