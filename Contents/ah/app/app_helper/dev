@@ -90,9 +90,16 @@ if [[ $2 == -a ]]; then
             add_file=./Contents/$1${add_file:${#HOME}}
             desc_git_path="$git_path/$git_repo/Contents/${1}"
         fi
-
-        mv "$add_file" "$desc_git_path/"
         
+        if [[ -f "$add_file" ]]; then
+            mv "$add_file" "$desc_git_path/"
+        elif [[ -d "$add_file" ]]; then
+            add_file_base=$(basename "$add_file")
+            if [[ ! -d "$desc_git_path/$add_file_base" ]]; then
+                mkdir -p "$desc_git_path/$add_file_base"
+            fi
+            mv "$add_file"/* "$desc_git_path/$add_file_base/"
+        fi
         cd "$desc_git_path"
         add_file_bash=$(basename "$add_file")
         git add $add_file_bash

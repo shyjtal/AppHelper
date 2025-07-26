@@ -1,6 +1,0 @@
-es will export the app and it's dependencies
-you need write dependencies in app root dir
-dependencies:
-    if sh, just write: sh_name
-    if tool, write: tool/sh_name
-    if homebrew, write: brew/app_name

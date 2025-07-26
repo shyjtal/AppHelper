@@ -42,4 +42,9 @@
     - auto add all README.md when one exists
     - add a new dev path to allow user to add sh(in $HOME/sh)
     - add a new config to init, add, commi and push a new app
-    
+
+# version 1.2.2
+- **date: 2025/07/26**
+- **env: macOS 15**
+- **feature**:
+    - add the feature(-dev) for dir  
