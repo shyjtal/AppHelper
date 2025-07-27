@@ -12,8 +12,8 @@ file_dst="$app_root_path/$file_name"
 
 if [ -d "$src_dir/app" ]; then
     app_type_name=app
-elif [ -d "$src_dir/simple" ]; then
-    app_type_name=simple
+elif [ -d "$src_dir/dev" ]; then
+    app_type_name=dev
 fi
 
 # 创建目标路径（如果不存在）
