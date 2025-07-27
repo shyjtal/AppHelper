@@ -14,7 +14,7 @@ if [[ -f "$HOME/sh/app/"$app_name"/dependencies" ]]; then
 
         if [[ $line == tool/* ]]; then
             ./process "$line"
-        elif [[ $line == simple/* ]]; then
+        elif [[ $line == dev/* ]]; then
             ./process "$line"
         elif [[ $line == brew/* ]]; then
             cp ./resources/brew/homebrew.sh ./temp/Resources/

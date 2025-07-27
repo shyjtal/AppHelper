@@ -48,3 +48,9 @@
 - **env: macOS 15**
 - **feature**:
     - add the feature(-dev) for dir  
+
+# version 1.2.3
+- **date: 2025/07/27**
+- **env: macOS 15**
+- **feature**:
+    - fixed the bug of not being able to handle dev/app

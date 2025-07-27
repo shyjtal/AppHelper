@@ -16,11 +16,11 @@ if [[ $sh_name == app/* ]]; then
     sh_base_path=$HOME/sh
     app_path=app
     echo "configure $sh_name ..."
-elif [[ $sh_name == simple/* ]]; then
+elif [[ $sh_name == dev/* ]]; then
     sh_type=app
-    sh_name="${sh_name#simple/}"
+    sh_name="${sh_name#dev/}"
     sh_base_path=$HOME/sh
-    app_path=simple
+    app_path=dev
     echo "configure $sh_name ..."
 elif [[ $sh_name == tool/* ]]; then
     sh_type=tool
