@@ -58,6 +58,16 @@ if [[ $2 == -a ]]; then
         add_files=("${@:3:$input_count_add}")
     fi
 
+    for add_file in "${add_files[@]}"; do
+        if [[ "$add_file" == "$default_add_key" ]]; then
+            IFS=',' read -ra default_add_vaule <<< "$default_add_vaule"
+            for default_vaule in "${default_add_vaule[@]}"; do
+                add_files+=("$default_vaule")
+            done
+            break;
+        fi
+    done
+
     readme_exist=0
     for add_file in "${add_files[@]}"; do
         if [[ "$add_file" == "/README.md" ]]; then
@@ -74,6 +84,10 @@ if [[ $2 == -a ]]; then
     fi
     
     for add_file in "${add_files[@]}"; do
+
+        if [[ "$add_file" == $default_add_key ]]; then
+            continue;
+        fi
 
         desc_git_path=$git_path
 

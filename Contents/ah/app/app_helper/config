@@ -1,7 +1,7 @@
-version=1.2.3
-readme_app=vscode
+version=1.2.4
+git_repo=AppHelper
 
-export_path=/Users/shijitao/Desktop
+readme_app=vscode
 
 # must choose a configuration(git_repo) in export app config 
 git_path=/Users/shijitao/git/shyjtal
@@ -10,12 +10,16 @@ git_name=shyjtal
 # if commit, auto push
 auto_push=true
 
-git_repo=AppHelper
+# dev default add
+default_add_key=@
+default_add_vaule=README.md,config
+
+export_path=/Users/shijitao/Desktop
 
 avh=desire movie
 y2m=youtube2music
 cpt=compress_txt
-mc=media_compress
+mcp=media_compress
 fs=FileStorage
 bvi=bilibili info
 s2c=share_to_cloud
@@ -25,4 +29,3 @@ cfile=clean_file
 rt=random_task
 ah=app_helper
 ari=arinan
-

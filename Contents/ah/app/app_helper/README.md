@@ -54,3 +54,9 @@
 - **env: macOS 15**
 - **feature**:
     - fixed the bug of not being able to handle dev/app
+
+# version 1.2.4
+- **date: 2025/07/31**
+- **env: macOS 15**
+- **feature**:
+    - add a pair of configurations in config allow user to set default add sign and files
