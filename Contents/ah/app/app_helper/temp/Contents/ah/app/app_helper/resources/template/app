@@ -1,9 +1,0 @@
-#!/bin/bash
-
-while IFS='=' read -r key value; do
-  # 忽略空行和注释行
-  if [[ -n "$key" && ! "$key" =~ ^# ]]; then
-    eval "export $key=\"$value\""
-  fi
-done < config
-
