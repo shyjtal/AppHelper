@@ -11,13 +11,12 @@ file_name=$(basename "$script_dir")
 if [[ -f "$script_dir/Resources/homebrew.sh" ]]; then
     chmod +x "$script_dir/Resources/homebrew.sh"
     "$script_dir/Resources/homebrew.sh"
-    read -p "Press Enter to exit..."
 fi
 
 cd $script_dir/Contents
 for item in ./*; do
     if [[ -d "$item" ]]; then
-        ./$item/Install.command
+        ./"$item"/Install.command
     fi
 done
 

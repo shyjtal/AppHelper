@@ -1,0 +1,35 @@
+version=1.3
+git_repo=AppHelper
+library_root=/Users/shijitao/Library/ShellApp
+
+readme_app=vscode
+
+# must choose a configuration(git_repo) in export app config 
+git_path=/Users/shijitao/git/shyjtal
+git_name=shyjtal
+
+# if commit, auto push
+auto_push=true
+
+# dev default add
+default_add_key=@
+default_add_vaule=README.md,config
+
+export_path=/Users/shijitao/Desktop
+
+avh=desire movie
+y2m=youtube2music
+cpt=compress_txt
+mcp=media_compress
+fs=FileStorage
+bvi=bilibili info
+s2c=share_to_cloud
+pw=paper_write
+czip=clean_zip
+cfile=clean_file
+rt=random_task
+ah=app_helper
+ari=arinan
+
+i=icloud_manager
+

@@ -1,0 +1,83 @@
+#!/bin/bash
+cd ~/sh/app/app_helper
+
+while IFS='=' read -r key value; do
+if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+    key_cleaned="${key// /_}"
+    export "$key_cleaned=$value"
+fi
+done < $HOME/sh/app/app_helper/config
+
+if [[ $1 == -a ]]; then
+    if [[ -z "$2" ]]; then
+        echo "sh name cannot be null"
+        exit;
+    fi
+    
+    if [[ ! -z "$3" ]]; then
+        mkdir -p ../"$3"
+        cd ../"$3"
+
+        if ! grep -q "^$2=" $HOME/sh/app/app_helper/config; then
+            if [ -n "$(tail -n 1 "$HOME/sh/app/app_helper/config")" ]; then
+                echo "" >> "$HOME/sh/app/app_helper/config"
+            fi
+            echo "$2=$3" >>  $HOME/sh/app/app_helper/config
+            if [ -n "$(tail -n 1 "$HOME/sh/app/app_helper/config")" ]; then
+                echo "" >> "$HOME/sh/app/app_helper/config"
+            fi
+        fi
+
+        if [[ ! -f ./dependencies ]]; then
+            touch dependencies
+        fi
+        if [[ ! -f ./app ]]; then
+            cp $HOME/sh/app/app_helper/resources/template/app ./app
+            chmod +x ./app
+        fi
+        if [[ ! -f ./help ]]; then
+            touch help
+        fi
+        if [[ ! -f ./config ]]; then
+            touch config
+            echo "version=1" >> config
+        fi
+        if [[ ! -f ./README.md ]]; then
+            touch README.md
+        fi
+
+        if [[ ! -e "$HOME/sh/$2" ]]; then
+            $HOME/sh/app/app_helper/resources/template/sh "$2" "$3"
+            sed -i '' -e '$d' "$HOME/sh/$2"
+            sed -i '' "2i\\
+            cd \"\$HOME/sh/app/$3\"
+            " "$HOME/sh/$2"
+            sed -i '' '2s/^[[:space:]]*//' "$HOME/sh/$2"
+            chmod +x "$HOME/sh/$2"
+        fi
+    else
+        touch "$HOME/sh/$2"
+        chmod +x "$HOME/sh/$2"
+    fi
+elif [[ $1 == -s ]]; then
+    app_name="$2"
+    open -n -a "$app_name"
+elif [[ $1 == -dev ]]; then
+    ./dev "${@:2}"
+    rm -r ./temp
+else
+    mkdir -p ./temp/Contents
+    mkdir -p ./temp/Resources
+
+    ./preprocess $@
+  
+    if [[ -f "$HOME/sh/app/${!1}/README.md" ]]; then
+        cp $HOME/sh/app/${!1}/README.md ./temp/
+    fi
+    cp ./resources/install/Install.command ./temp/
+    cd ./temp
+    zip -qr "$1.zip" ./Install.command ./Resources ./Contents ./README.md -x "*.DS_Store" "*/.MacOS/*" "*/__MACOSX/"
+    mv ./"$1.zip" "$export_path"/
+
+    rm -r $HOME/sh/app/app_helper/temp
+fi

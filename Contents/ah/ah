@@ -10,16 +10,11 @@ done < $HOME/sh/app/app_helper/config
 if [[ $1 == "-version" ]]; then
     echo $version
 elif [[ $1 == "-readme" ]]; then
-    readme_app="$($HOME/sh/tools/resolve_app "$readme_app")"
-    if [[ -z $readme_app || "$readme_app" == "vim" ]]; then
-      vim README.md
-    else
-      open -a "$readme_app" README.md
-    fi
+    $HOME/sh/tools/open_file_with_app README.md "$($HOME/sh/tools/resolve_app $readme_app)"
 elif [[ $1 == -c ]]; then
-    vim ./config
+    $HOME/sh/tools/open_file_with_app config "$($HOME/sh/tools/resolve_app $config_app)"
 elif [[ $1 == -h ]]; then
-    cat ./help.txt
+    cat ./help
 elif [[ $1 == -l ]]; then
     echo "sh list:"
     for f in $HOME/sh/*; do

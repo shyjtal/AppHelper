@@ -12,8 +12,8 @@ file_dst="$app_root_path/$file_name"
 
 if [ -d "$src_dir/app" ]; then
     app_type_name=app
-elif [ -d "$src_dir/simple" ]; then
-    app_type_name=simple
+elif [ -d "$src_dir/dev" ]; then
+    app_type_name=dev
 fi
 
 # 创建目标路径（如果不存在）
@@ -47,8 +47,11 @@ if [ ! -z $app_type_name ]; then
             [[ -z "$line" || "$line" =~ ^[[:space:]]*$ ]] && continue
             if [[ $line == brew/* ]]; then
                 sh_name="${line#brew/}"
-                echo "configure $sh_name ..."
                 read -r brew_option brew_app <<< "$sh_name"
+                if brew list --versions $sh_name >/dev/null 2>&1; then
+                    continue
+                fi
+                echo "configure $sh_name ..."
                 if [[ -z $brew_app ]]; then
                     brew_app=$brew_option
                     brew_option="--formula"
@@ -68,5 +71,4 @@ if [ ! -z $app_type_name ]; then
 
         done < "./dependencies"
     fi
-    
 fi

@@ -60,3 +60,11 @@
 - **env: macOS 15**
 - **feature**:
     - add a pair of configurations in config allow user to set default add sign and files
+
+# version 1.3
+- **date: 2025/08/09**
+- **env: macOS 15**
+- **feature**:
+    - add a new apply for application, including its app and data
+    - simply the process that install app for user
+

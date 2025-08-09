@@ -8,6 +8,7 @@ fi
 done < $HOME/sh/app/app_helper/config
 
 app_name="${!1}"
+
 if [[ -f "$HOME/sh/app/"$app_name"/dependencies" ]]; then
     while IFS= read -r line || [[ -n $line ]]; do
         [[ -z "$line" || "$line" =~ ^[[:space:]]*$ ]] && continue
@@ -16,6 +17,10 @@ if [[ -f "$HOME/sh/app/"$app_name"/dependencies" ]]; then
             ./process "$line"
         elif [[ $line == dev/* ]]; then
             ./process "$line"
+        elif [[ $line == app/* ]]; then
+            ./process "$line"
+        elif [[ $line == library/* ]]; then
+            ./process "$line"
         elif [[ $line == brew/* ]]; then
             cp ./resources/brew/homebrew.sh ./temp/Resources/
             cp ./resources/brew/install.sh ./temp/Resources/   
@@ -23,6 +28,6 @@ if [[ -f "$HOME/sh/app/"$app_name"/dependencies" ]]; then
             ./preprocess $line
         fi
 
-    done < "$HOME/sh/app/"$app_name"/dependencies"
+    done < "$HOME/sh/app/$app_name/dependencies"
 fi
-./process app/$1 ${@:2}
+./process shell/$1 ${@:2}
